@@ -1,0 +1,25 @@
+{
+  "name": "cypress-api-circleci",
+  "version": "1.0.0",
+  "description": "Example of project with UI tests created using Cypress with Page Object model and integration with Circle Ci using the orb https://circleci.com/developer/orbs/orb/cypress-io/cypress with ability to run tests using multiple parallel jobs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maksr13/cypress-api-circleci.git"
+  },
+  "author": "maksr13",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/maksr13/cypress-api-circleci/issues"
+  },
+  "homepage": "https://github.com/maksr13/cypress-api-circleci#readme",
+  "devDependencies": {
+    "cypress-mochawesome-reporter": "^3.5.1"
+  },
+  "dependencies": {
+    "moment": "^2.29.4"
+  }
+}

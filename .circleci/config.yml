@@ -1,0 +1,80 @@
+version: 2.1
+orbs:
+
+  # https://circleci.com/developer/orbs/orb/cypress-io/cypress
+  # https://github.com/cypress-io/circleci-orb/tree/v3.1.3
+  cypress: cypress-io/cypress@3.1.3
+executors:
+  default:
+    docker:
+      # https://github.com/cypress-io/cypress-docker-images
+      - image: 'cypress/browsers:latest'
+
+    # https://circleci.com/docs/using-docker/#available-docker-resource-classes
+    resource_class: xlarge
+parameters:
+  ENV:
+    type: string
+    default: prod
+  SPEC:
+    type: string
+    default: skip
+  PARALLELISM:
+    type: integer
+    default: 1
+  BROWSER:
+    type: string
+    default: chrome
+
+workflows:
+  cypress-certain-specs:
+    when:
+      and:
+        - not:
+            equal: [ regression, << pipeline.parameters.SPEC >> ]
+        - not:
+            equal: [ smoke, << pipeline.parameters.SPEC >> ]
+        - not:
+            equal: [ skip, << pipeline.parameters.SPEC >> ]            
+    jobs:
+      - cypress/run:
+           name: (<< pipeline.parameters.ENV >>)--<< pipeline.parameters.SPEC >>
+           parallelism: << pipeline.parameters.PARALLELISM >>
+           install-browsers: true
+           cypress-command: |
+             TEST_FILES="$(circleci tests glob "<< pipeline.parameters.SPEC >>" | circleci tests split)"
+             DEBUG=cypress:launcher ./node_modules/.bin/cypress run --browser=<< pipeline.parameters.BROWSER >> --config-file cypress/config/<< pipeline.parameters.ENV >>.config.js --spec ${TEST_FILES//$'\n'/','}
+           post-steps:
+             - store_artifacts:
+                 path: cypress/reports
+  cypress:
+    when:
+      or:
+        - equal: [ regression, << pipeline.parameters.SPEC >> ]
+        - equal: [ skip, << pipeline.parameters.SPEC >> ]        
+    jobs:
+      # run regression
+      - cypress/run:
+           install-browsers: true
+           name: (<< pipeline.parameters.ENV >>--<< pipeline.parameters.SPEC >>--rerun--<< pipeline.parameters.RERUN >>)--pet-get
+           parallelism: 1
+           cypress-command: |
+             TEST_FILES="$(circleci tests glob \
+             "cypress/e2e/pet/pet_get.cy.js" \
+             | circleci tests split)"
+             ./node_modules/.bin/cypress run --browser=<< pipeline.parameters.BROWSER >> --config-file cypress/config/<< pipeline.parameters.ENV >>.config.js --spec ${TEST_FILES//$'\n'/','}
+           post-steps:
+             - store_artifacts:
+                 path: cypress/reports
+      - cypress/run:
+           install-browsers: true
+           name: (<< pipeline.parameters.ENV >>--<< pipeline.parameters.SPEC >>--rerun--<< pipeline.parameters.RERUN >>)--pet-post
+           parallelism: 1
+           cypress-command: |
+             TEST_FILES="$(circleci tests glob \
+             "cypress/e2e/pet/pet_post.cy.js" \
+             | circleci tests split)"
+             ./node_modules/.bin/cypress run --browser=<< pipeline.parameters.BROWSER >> --config-file cypress/config/<< pipeline.parameters.ENV >>.config.js --spec ${TEST_FILES//$'\n'/','}
+           post-steps:
+             - store_artifacts:
+                 path: cypress/reports
