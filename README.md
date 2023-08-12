@@ -43,7 +43,7 @@ It has a structure like this - each folder corresponds to the specific API endpo
 
 :file_folder: `helpers/api/ApiHeadersResponses.js` file - class that contains headers that we expect to see in the response after making corresponding requests
 
-:file_folder: `.circleci` folder contains config file that allows us the ability to run tests on CricleCi
+:file_folder: `.circleci`  - folder that contains config file that allows us the ability to run tests on CricleCi
 
 📝 Reporter
     - We use `cypress-mochawesome-reporter`. [Read more](https://www.npmjs.com/package/cypress-mochawesome-reporter). Example of report:
