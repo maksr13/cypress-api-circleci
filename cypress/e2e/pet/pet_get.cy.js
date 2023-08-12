@@ -4,6 +4,7 @@ import { Api } from '../../helpers/api/Api';
 describe('Pet Get', () => {
 
     it('Get a pet by ID and validate status code and response body', () => {
+        // Create Pet that we will use for Get request
         const postPetData = Api.bodyRequests.getPostPetBodyRequest();
         Api.postPet({ body: postPetData }).then((response) => {
             const petId = response.body.id;
@@ -19,6 +20,7 @@ describe('Pet Get', () => {
     });
 
     it('Get a pet by ID and validate response headers', () => {
+        // Create Pet that we will use for Get request
         const postPetData = Api.bodyRequests.getPostPetBodyRequest();
         Api.postPet({ body: postPetData }).then((response) => {
             const petId = response.body.id;
