@@ -47,7 +47,8 @@ It has a structure like this - each folder corresponds to the specific API endpo
 
 📝 Reporter
     - We use `cypress-mochawesome-reporter`. [Read more](https://www.npmjs.com/package/cypress-mochawesome-reporter). Example of report:
-![image](https://github.com/maksr13/cypress-page-object-circleci/assets/22858879/5b881025-097e-4d81-be6e-3d8a4b6c681e)
+![image](https://github.com/maksr13/cypress-api-testing-circleci/assets/22858879/c4a9bbf2-0fc2-49c5-8457-645f68c8608b)
+
 
 ✅ Circle Ci integration is implemented with following abilities:
 - running certain spec / specs on CircleCI
